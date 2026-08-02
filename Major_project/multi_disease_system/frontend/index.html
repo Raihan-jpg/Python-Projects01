@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Multi-Disease Prediction System</title>
+    <!-- Tailwind CSS Engine CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-slate-800">
+
+    <!-- Global Top Header Navbar -->
+    <header class="gradient-bg text-white py-6 px-8 shadow-md">
+        <h1 class="text-3xl font-extrabold tracking-tight">AI-Powered Multi-Disease Engine</h1>
+        <p class="text-blue-200 text-sm mt-1">Explainable Clinical Assessment Diagnostics Matrix (XAI)</p>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Grid Column: Patient Feature Inputs -->
+        <section class="lg:col-span-1 bg-white rounded-xl shadow p-6 border border-gray-100">
+            <h2 class="text-xl font-bold border-b pb-3 mb-4 text-slate-900">Patient Physiological Vitals</h2>
+            <form id="vitalsForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Chronological Age</label>
+                    <input type="number" id="age" value="45" class="mt-1 w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Body Mass Index (BMI)</label>
+                    <input type="number" step="0.1" id="bmi" value="28.4" class="mt-1 w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Fasting Blood Glucose (mg/dL)</label>
+                    <input type="number" id="glucose" value="140" class="mt-1 w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Systolic Blood Pressure (mm Hg)</label>
+                    <input type="number" id="blood_pressure" value="135" class="mt-1 w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Serum Cholesterol (mg/dl)</label>
+                    <input type="number" id="cholesterol" value="240" class="mt-1 w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Total Bilirubin (mg/dL)</label>
+                    <input type="number" step="0.1" id="bilirubin" value="1.2" class="mt-1 w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Alkaline Phosphatase (U/L)</label>
+                    <input type="number" id="alkphos" value="95" class="mt-1 w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Serum Creatinine (mg/dL)</label>
+                    <input type="number" step="0.1" id="creatinine" value="1.1" class="mt-1 w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                
+                <div class="pt-2">
+                    <span class="block text-sm font-semibold text-gray-700 mb-2">Behavioral/Lifestyle Factors</span>
+                    <label class="flex items-center space-x-3 bg-gray-50 p-2.5 rounded-lg border cursor-pointer">
+                        <input type="checkbox" id="smoking" class="w-4 h-4 text-blue-600 rounded">
+                        <span class="text-sm font-medium text-gray-700">History of Chronic Smoking</span>
+                    </label>
+                    <label class="flex items-center space-x-3 bg-gray-50 p-2.5 rounded-lg border cursor-pointer mt-2">
+                        <input type="checkbox" id="alcohol" class="w-4 h-4 text-blue-600 rounded">
+                        <span class="text-sm font-medium text-gray-700">Regular Alcohol Consumption</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-blue-800 transition duration-200">
+                    Compute Risk Diagnostics
+                </button>
+            </form>
+        </section>
+
+        <!-- Right Grid Column: Data Science Visualizations & Referrals -->
+        <section class="lg:col-span-2 space-y-6">
+            
+            <!-- Dynamic Clinical Referrals Container -->
+            <div id="referralCard" class="hidden bg-red-50 border-l-4 border-red-600 p-5 rounded-r-xl shadow-sm">
+                <h3 class="text-red-900 font-bold text-lg mb-2 flex items-center">
+                    ⚠️ Automated Medical Specialist Referral Flag
+                </h3>
+                <div id="referralsTarget" class="space-y-3 text-sm text-red-800">
+                    <!-- Targeted recommendations injected here dynamically -->
+                </div>
+            </div>
+
+            <!-- Diagnostics Metrics Dashboard -->
+            <div class="bg-white rounded-xl shadow p-6 border border-gray-100">
+                <div class="flex justify-between items-center border-b pb-3 mb-6">
+                    <h2 class="text-xl font-bold text-slate-900">Computed Diagnostic Output</h2>
+                    <button id="downloadPdfBtn" class="hidden bg-emerald-600 text-white font-semibold text-sm py-2 px-4 rounded-md shadow hover:bg-emerald-700 transition">
+                        Export Clean PDF Summary
+                    </button>
+                </div>
+
+                <div id="resultsWrapper" class="space-y-8">
+                    <p class="text-gray-500 italic text-center py-12">Submit physiological profile metrics to populate AI analysis models.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- UI Core Interactive Logic Architecture Javascript -->
+    <script>
+        let latestGlobalData = null;
+
+        document.getElementById('vitalsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Reconstruct JSON payload from form fields
+            const payload = {
+                age: document.getElementById('age').value,
+                bmi: document.getElementById('bmi').value,
+                glucose: document.getElementById('glucose').value,
+                blood_pressure: document.getElementById('blood_pressure').value,
+                cholesterol: document.getElementById('cholesterol').value,
+                bilirubin: document.getElementById('bilirubin').value,
+                alkphos: document.getElementById('alkphos').value,
+                creatinine: document.getElementById('creatinine').value,
+                smoking: document.getElementById('smoking').checked ? 1 : 0,
+                alcohol: document.getElementById('alcohol').checked ? 1 : 0
+            };
+
+            try {
+                const res = await fetch('http://127.0.0.1:5000/api/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                latestGlobalData = data;
+                
+                renderDashboard(data);
+            } catch (err) {
+                alert("API connection failed. Verify Flask runtime execution state.");
+            }
+        });
+
+        function renderDashboard(data) {
+            const wrapper = document.getElementById('resultsWrapper');
+            const refCard = document.getElementById('referralCard');
+            const refTarget = document.getElementById('referralsTarget');
+            const pdfBtn = document.getElementById('downloadPdfBtn');
+            
+            wrapper.innerHTML = '';
+            refTarget.innerHTML = '';
+            
+            // Build dynamic referrals interface loop
+            if (data.referrals && data.referrals.length > 0) {
+                refCard.classList.remove('hidden');
+                data.referrals.forEach(ref => {
+                    const block = document.createElement('div');
+                    block.className = "bg-white p-3 rounded-lg border border-red-200 shadow-sm";
+                    block.innerHTML = `<strong>${ref.disease} Detection Risk Elevated:</strong> Share results with a specialized <u><b>${ref.specialist}</b></u>.<br><span class="text-gray-500 text-xs">${ref.reason}</span>`;
+                    refTarget.appendChild(block);
+                });
+            } else {
+                refCard.classList.add('hidden');
+            }
+
+            // Expose the PDF download trigger button element
+            pdfBtn.classList.remove('hidden');
+
+            // Render Multi-Disease progress widgets and SHAP layouts
+            for (const [disease, metrics] of Object.entries(data.predictions)) {
+                const card = document.createElement('div');
+                card.className = "p-4 border border-gray-100 rounded-xl bg-slate-50 shadow-sm";
+                
+                // Color matrix selector configuration
+                let barColor = 'bg-emerald-500';
+                if (metrics.risk_percentage > 40) barColor = 'bg-amber-500';
+                if (metrics.risk_percentage > 70) barColor = 'bg-red-600';
+
+                // Construct SHAP text weight maps explicitly
+                let shapBarsHtml = '';
+                for (const [feature, weight] of Object.entries(metrics.shap_values)) {
+                    const isPositive = weight >= 0;
+                    const displayWidth = Math.min(Math.abs(weight) * 100, 100);
+                    const flexAlignment = isPositive ? 'justify-start' : 'justify-end';
+                    const colorBlock = isPositive ? 'bg-red-400' : 'bg-emerald-400';
+                    
+                    shapBarsHtml += `
+                        <div class="flex items-center text-xs mt-1.5">
+                            <span class="w-24 text-gray-600 font-medium">${feature}</span>
+                            <div class="flex-1 bg-gray-200 h-2.5 rounded relative mx-2 flex ${flexAlignment}">
+                                <div class="${colorBlock} h-full rounded" style="width: ${displayWidth}%"></div>
+                            </div>
+                            <span class="w-12 text-right font-mono ${isPositive ? 'text-red-600' : 'text-emerald-600'}">${isPositive ? '+' : ''}${weight}</span>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-lg font-bold text-gray-900 uppercase tracking-wide">${disease} Risk Level</h3>
+                        <span class="text-base font-black px-2.5 py-1 rounded bg-white border text-slate-800">${metrics.risk_percentage}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden shadow-inner mb-4">
+                        <div class="${barColor} h-full transition-all duration-500" style="width: ${metrics.risk_percentage}%"></div>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border border-gray-200">
+                        <span class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">SHAP Explanatory Weights Analysis</span>
+                        ${shapBarsHtml}
+                    </div>
+                `;
+                wrapper.appendChild(card);
+            }
+        }
+
+        document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
+            if (!latestGlobalData) return;
+            
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/download-report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(latestGlobalData)
+                });
+                
+                const blob = await response.blob();
+                const fileUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = fileUrl;
+                a.download = "Diagnostic_Health_Summary.pdf";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            } catch (err) {
+                alert("Error compiling PDF binary file stream downstream.");
+            }
+        });
+    </script>
+</body>
+</html>
